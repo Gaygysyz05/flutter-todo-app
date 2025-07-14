@@ -11,10 +11,6 @@ A beautiful and intuitive TODO application built with Flutter, featuring local d
 - **Clean UI**: Modern dark theme with smooth transitions
 - **Responsive Design**: Works seamlessly across different screen sizes
 
-## 🎯 Screenshots
-
-*Add screenshots of your app here to showcase its UI*
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -112,13 +108,6 @@ lib/
 - ✅ iOS  
 - ✅ Web (with minor adjustments)
 - ✅ Desktop (Windows, macOS, Linux)
-
-## 🧪 Testing
-
-Run tests with:
-```bash
-flutter test
-```
 
 ## 🤝 Contributing
 
