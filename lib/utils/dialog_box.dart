@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todo/utils/my_button.dart';
 
 class DialogBox extends StatelessWidget {
-  final controller;
-  VoidCallback onSave;
-  VoidCallback onCancel;
+  final TextEditingController controller;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
 
-  DialogBox({
+  const DialogBox({
     super.key,
     required this.controller,
     required this.onSave,
@@ -16,15 +16,15 @@ class DialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Color(0xFF34495E),
-      content: Container(
+      backgroundColor: const Color(0xFF34495E),
+      content: SizedBox(
         height: 120,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextField(
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
