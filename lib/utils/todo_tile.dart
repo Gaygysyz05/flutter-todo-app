@@ -4,10 +4,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class TodoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
-  Function(bool?)? onChanged;
-  Function(BuildContext)? deleteFunction;
+  final Function(bool?)? onChanged;
+  final Function(BuildContext)? deleteFunction;
 
-  TodoTile({
+  const TodoTile({
     super.key,
     required this.taskName,
     required this.taskCompleted,
@@ -21,20 +21,20 @@ class TodoTile extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: StretchMotion(),
+          motion: const StretchMotion(),
           children: [
             SlidableAction(
               onPressed: deleteFunction,
               icon: Icons.delete,
               backgroundColor: Colors.red,
-              borderRadius: BorderRadius.only(),
+              borderRadius: const BorderRadius.only(),
             ),
           ],
         ),
         child: Container(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Color(0xFF34495E),
+            color: const Color(0xFF34495E),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -43,7 +43,7 @@ class TodoTile extends StatelessWidget {
                 value: taskCompleted,
                 onChanged: onChanged,
                 activeColor: Colors.black,
-                side: BorderSide(color: Colors.white),
+                side: const BorderSide(color: Colors.white),
               ),
               Text(
                 taskName,

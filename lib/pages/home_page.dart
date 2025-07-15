@@ -70,13 +70,13 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white70,
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
-        backgroundColor: Color(0xFF2C3E50),
-        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: const Color(0xFF2C3E50),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       appBar: AppBar(
-        title: Text('TO DO', style: TextStyle(color: Colors.white)),
+        title: const Text('TO DO', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Color(0xFF2C3E50),
+        backgroundColor: const Color(0xFF2C3E50),
         elevation: 0,
       ),
       body: ListView.builder(

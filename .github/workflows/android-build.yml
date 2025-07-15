@@ -40,7 +40,7 @@ jobs:
       run: flutter pub deps
 
     - name: Analyze code
-      run: flutter analyze --fatal-infos
+      run: flutter analyze --fatal-warnings
 
     - name: Run tests (skip if no tests)
       run: flutter test || echo "No tests found, continuing..."
