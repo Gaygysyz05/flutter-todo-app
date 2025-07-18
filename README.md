@@ -50,15 +50,23 @@ A beautiful and intuitive TODO application built with Flutter, featuring local d
 
 ```
 lib/
-├── data/
-│   └── database.dart          # Hive database operations
-├── pages/
-│   └── home_page.dart         # Main app screen
-├── utils/
-│   ├── dialog_box.dart        # Add task dialog
-│   ├── my_button.dart         # Custom button component
-│   └── todo_tile.dart         # Task list item widget
-└── main.dart                  # App entry point
+├── models/
+│   └── todo_task.dart              # TodoTask model
+├── repositories/
+│   └── todo_repository.dart        # Data access layer
+├── services/
+│   └── todo_service.dart           # Business logic
+├── presentation/
+│   ├── controllers/
+│   │   └── todo_controller.dart    # State management
+│   ├── pages/
+│   │   └── home_page.dart          # Main app screen
+│   └── widgets/
+│       ├── add_task_dialog.dart    # Add task dialog
+│       ├── custom_button.dart      # Custom button component
+│       ├── error_widget.dart       # Error display widget
+│       └── todo_tile.dart          # Task list item widget
+└── main.dart                       # App entry point
 ```
 
 ## 💡 Key Implementation Details
