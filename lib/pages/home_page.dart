@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:todo/data/database.dart';
-import 'package:todo/utils/dialog_box.dart';
-import 'package:todo/utils/todo_tile.dart';
+import 'package:provider/provider.dart';
+import '../controllers/todo_controller.dart';
+import '../widgets/todo_tile.dart';
+import '../widgets/add_task_dialog.dart';
+import '../widgets/error_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,81 +13,111 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _myBox = Hive.box('mybox');
-  ToDoDataBase db = ToDoDataBase();
-
   @override
   void initState() {
-    // first time open
-    if (_myBox.get("TODOLIST") == null) {
-      db.createInitialData();
-    } else {
-      db.loadData();
-    }
     super.initState();
-  }
-
-  final _controller = TextEditingController();
-
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      db.toDoList[index][1] = !db.toDoList[index][1];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TodoController>().loadTasks();
     });
-    db.updateDataBase();
   }
 
-  void saveNewTask() {
-    setState(() {
-      db.toDoList.add([_controller.text, false]);
-      _controller.clear();
-    });
-    Navigator.of(context).pop();
-    db.updateDataBase();
-  }
-
-  void createNewTask() {
+  void _showAddTaskDialog() {
     showDialog(
       context: context,
-      builder: (context) {
-        return DialogBox(
-          controller: _controller,
-          onSave: saveNewTask,
-          onCancel: () => Navigator.of(context).pop(),
-        );
-      },
+      builder: (context) => AddTaskDialog(
+        onAddTask: (title) => _addTask(title),
+      ),
     );
   }
 
-  void deleteTask(int index) {
-    setState(() {
-      db.toDoList.removeAt(index);
-    });
-    db.updateDataBase();
+  Future<void> _addTask(String title) async {
+    await context.read<TodoController>().addTask(title);
+  }
+
+  Future<void> _toggleTask(int index) async {
+    await context.read<TodoController>().toggleTask(index);
+  }
+
+  Future<void> _deleteTask(int index) async {
+    await context.read<TodoController>().deleteTask(index);
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red.shade400,
+        action: SnackBarAction(
+          label: 'Dismiss',
+          textColor: Colors.white,
+          onPressed: () => context.read<TodoController>().clearError(),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
-      floatingActionButton: FloatingActionButton(
-        onPressed: createNewTask,
-        backgroundColor: const Color(0xFF2C3E50),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('TO DO', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'TODO',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: const Color(0xFF2C3E50),
         elevation: 0,
       ),
-      body: ListView.builder(
-        itemCount: db.toDoList.length,
-        itemBuilder: (context, index) {
-          return TodoTile(
-            taskName: db.toDoList[index][0],
-            taskCompleted: db.toDoList[index][1],
-            onChanged: (value) => checkBoxChanged(value, index),
-            deleteFunction: (context) => deleteTask(index),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTaskDialog,
+        backgroundColor: const Color(0xFF2C3E50),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+      body: Consumer<TodoController>(
+        builder: (context, controller, child) {
+          // Показываем ошибку через SnackBar
+          if (controller.hasError) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _showErrorSnackBar(controller.errorMessage!);
+            });
+          }
+
+          if (controller.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2C3E50)),
+              ),
+            );
+          }
+
+          if (controller.tasks.isEmpty) {
+            return const Center(
+              child: Text(
+                'No tasks yet!\nTap + to add your first task',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+            );
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            itemCount: controller.tasks.length,
+            itemBuilder: (context, index) {
+              final task = controller.tasks[index];
+              return TodoTile(
+                task: task,
+                onToggle: () => _toggleTask(index),
+                onDelete: () => _deleteTask(index),
+              );
+            },
           );
         },
       ),
