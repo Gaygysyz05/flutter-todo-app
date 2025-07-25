@@ -1,0 +1,14 @@
+*.dart linguist-language=Dart
+*.cpp linguist-vendored=true
+*.cc linguist-vendored=true
+*.c linguist-vendored=true
+*.h linguist-vendored=true
+*.cmake linguist-vendored=true
+CMakeLists.txt linguist-vendored=true
+android/ linguist-vendored=true
+ios/ linguist-vendored=true
+windows/ linguist-vendored=true
+macos/ linguist-vendored=true
+linux/ linguist-vendored=true
+build/ linguist-vendored=true
+.dart_tool/ linguist-vendored=true

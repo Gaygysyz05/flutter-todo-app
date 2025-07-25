@@ -25,7 +25,7 @@ class TodoController extends ChangeNotifier {
   Future<void> addTask(String title) async {
     await _performAsyncOperation(() async {
       await _todoService.createTask(title);
-      await loadTasks(); // Перезагружаем список
+      await loadTasks();
     });
   }
 
@@ -38,7 +38,7 @@ class TodoController extends ChangeNotifier {
     await _performAsyncOperation(() async {
       final task = _tasks[index];
       await _todoService.toggleTaskCompletion(index, !task.isCompleted);
-      await loadTasks(); // Перезагружаем список
+      await loadTasks();
     });
   }
 
@@ -50,7 +50,7 @@ class TodoController extends ChangeNotifier {
 
     await _performAsyncOperation(() async {
       await _todoService.removeTask(index);
-      await loadTasks(); // Перезагружаем список
+      await loadTasks();
     });
   }
 

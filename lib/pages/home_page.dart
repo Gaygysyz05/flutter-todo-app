@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../controllers/todo_controller.dart';
 import '../widgets/todo_tile.dart';
 import '../widgets/add_task_dialog.dart';
-import '../widgets/error_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,7 +78,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Consumer<TodoController>(
         builder: (context, controller, child) {
-          // Показываем ошибку через SnackBar
           if (controller.hasError) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _showErrorSnackBar(controller.errorMessage!);
